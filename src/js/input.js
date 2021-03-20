@@ -45,9 +45,14 @@ const handleInput = event => {
     }).catch(console.log);
 }
 
-function createListOfCountries() {
-
+function createListOfCountries(result) {
+    const template = '<ul class="country-list">' + result.reduce((acc, item) => {
+        acc += `<li>${item.name}</li>`;
+        return acc;
+    }, '') + '</ul>';
+    return template;
 };
-function createCountryCard() {
     
+function createCountryCard(result) {
+
 };
