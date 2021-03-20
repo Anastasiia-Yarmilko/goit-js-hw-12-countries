@@ -1,3 +1,8 @@
+@import '../node_modules/@pnotify/core/dist/PNotify.css';
+@import '../node_modules/@pnotify/mobile/dist/PNotifyMobile.css';
+@import '../node_modules/@pnotify/core/dist/Material.css';
+@import '../node_modules/material-design-icons/iconfont/material-icons.css';
+
 :root {
   --timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -9,10 +14,11 @@
 }
 
 body {
-  background-color: rgb(124, 124, 124);
+  background-color: rgb(172, 172, 172);
+  padding-top: 50px;
 }
 
-.search-fild {
+.search-field {
   display: block;
   margin-right: auto;
   margin-left: auto;

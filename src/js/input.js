@@ -11,61 +11,63 @@ defaults.styling = 'brighttheme';
 defaults.icons = 'brighttheme';
 defaults.closerHover = true;
 
-const refs = {
-    input: document.querySelector('.search-fild'),
-    searchResults: document.querySelector('.search-results')
-}
+const refsInput = document.querySelector('.search-field');
+const refsSearchResults = document.querySelector('.search-results');
 
-const handleInput = event => {
-    refs.searchResults.innerHTML = '';
-    const countrySearchTitle = event.target.value;
-    fetchCountries(countrySearchTitle).then(result => {
-        if (result.lengh >= 10) {
+function displayCountries(event) {
+    refsSearchResults.innerHTML = '';
+    const countrySearchName = event.target.value;
+    fetchCountries(countrySearchName)
+    .then(results => {
+        if (results.length > 10) {
             alert({
                 text: 'Too many matches found. Please enter a more specific query!',
                 type: 'error',
-                delay: 2000,
+                delay: 1000,
                 stack: new Stack({
-                    dir1: 'up',
-                }),
-            })
-        }
-
-        if (result.length < 10 && results.length >= 2) {
-            refs.searchResults.insertAdjacentHTML(
-                'beforeend', createListOfCountries(result)
+            dir1: 'up',
+        }),
+    });
+}
+if (results.length >= 2 && results.length <= 10) {
+    refsSearchResults.insertAdjacentHTML(
+        'beforeend',
+        createListCountriesTemplate(results),
+        );
+      }
+      if (results.length === 1) {
+        refsSearchResults.insertAdjacentHTML(
+            'beforeend',
+            createCountryPropertiesTemplate(results),
             );
-        };
-
-        if (result.lengh === 1) {
-            refs.searchResults.insertAdjacentHTML(
-                'beforeend', createCountryCard(result)
-            );
         }
-    }).catch(console.log);
+    })
+    .catch(console.log);
 }
 
-function createListOfCountries(result) {
-    const template = '<ul class="country-list">' + result.reduce((acc, item) => {
-        acc += `<li>${item.name}</li>`;
-        return acc;
-    }, '') + '</ul>';
+function createListCountriesTemplate(results) {
+  const template =
+  '<ul class="country-list">' +
+  results.reduce((acc, item) => {
+      acc += `<li>${item.name}</li>`;
+      return acc;
+    }, '') +
+    '</ul>';
     return template;
-};
-    
-function createCountryCard(result) {
-    const language = result[0].languages.reduce((acc, item) => {
+}
+
+function createCountryPropertiesTemplate(results) {
+    const languageDisplay = results[0].languages.reduce((acc, item) => {
         acc += `<li>${item.name}</li>`;
         return acc;
     }, '');
-
-    const countryCard = `<h2 class='country-name'>${data[0].name}</h2>
-        <div class='country-card'><div class='country-properties'>
-        <p><span class='country-property'>Capital: </span>${data[0].capital}</p>
-        <p><span class='country-property'>Population: </span>${data[0].population}</p>
-        <h3 class='country-property'>Languages:</h3><ul>${language}</ul></div>
-        <img height='500px' src="${data[0].flag}" alt="flag of coutnry"></img></div>`;
-    return countryCard;
+    const templateCountry = `<h2 class='country-name'>${results[0].name}</h2>
+    <div class='wrapper'><div class='country-properties'>
+    <p><span class='country-property'>Capital: </span>${results[0].capital}</p>
+    <p><span class='country-property'>Population: </span>${results[0].population}</p>
+    <h3 class='country-property'>Languages:</h3><ul>${languageDisplay}</ul></div>
+    <img height='400px' src="${results[0].flag}" alt="flag"></img></div>`;
+    return templateCountry;
 };
 
-refs.input.addEventListener('input', debounce(handleInput, 500));
+refsInput.addEventListener('input', debounce(displayCountries, 1000));
